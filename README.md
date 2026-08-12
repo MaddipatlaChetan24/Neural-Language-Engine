@@ -5,7 +5,31 @@
 **AI-powered next-word prediction system using LSTM neural networks for real-time language modeling and intelligent text completion.**
 
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)](https://python.org)
-[![TensorFlow](https://img.shields.io/badge
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-FF6F00?logo=tensorflow&logoColor=white)](https://tensorflow.org)
+[![Keras](https://img.shields.io/badge/Keras-D00000?logo=keras&logoColor=white)](https://keras.io)
+[![Flask](https://img.shields.io/badge/Flask-000000?logo=flask&logoColor=white)](https://flask.palletsprojects.com)
+
+</div>
+
+---
+
+# Overview
+
+**Neural Language Engine** is an end-to-end **Natural Language Processing (NLP)** application that predicts the most probable next word using a deep learning model based on **Long Short-Term Memory (LSTM)** networks.
+
+The system processes input text, converts it into numerical sequences using tokenization, performs inference with a trained LSTM model, and returns the most likely next word along with confidence scores and ranked predictions through an interactive web interface.
+
+---
+
+# Features
+
+| Feature | Description |
+|----------|-------------|
+| **Next Word Prediction** | Predicts the most probable next word from an input sequence. |
+| **LSTM Neural Network** | Deep learning model for sequential language modeling. |
+| **Real-Time Inference** | Generates predictions instantly through a web interface. |
+| **Confidence Scores** | Displays prediction probabilities for better interpretability. |
+| **Top-5 Predictions** | Shows the five most likely next words with confidence values. |
 | **Interactive Dashboard** | Modern UI with neural network visualization and responsive design. |
 
 ---
