@@ -13,29 +13,6 @@
 
 ---
 
-# Overview
-
-**Neural Language Engine** is an end-to-end **Natural Language Processing (NLP)** application that predicts the most probable next word using a deep learning model based on **Long Short-Term Memory (LSTM)** networks.
-
-The system processes input text, converts it into numerical sequences using tokenization, performs inference with a trained LSTM model, and returns the most likely next word along with confidence scores and ranked predictions through an interactive web interface.
-
----
-
-# Features
-
-| Feature | Description |
-|----------|-------------|
-| **Next Word Prediction** | Predicts the most probable next word from an input sequence. |
-| **LSTM Neural Network** | Deep learning model for sequential language modeling. |
-| **Real-Time Inference** | Generates predictions instantly through a web interface. |
-| **Confidence Scores** | Displays prediction probabilities for better interpretability. |
-| **Top-5 Predictions** | Shows the five most likely next words with confidence values. |
-| **Interactive Dashboard** | Modern UI with neural network visualization and responsive design. |
-
----
-
-# Architecture
-
 ```mermaid
 flowchart LR
 
