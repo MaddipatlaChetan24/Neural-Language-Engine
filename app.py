@@ -9,37 +9,7 @@ import sys
 import io
 import pickle
 import numpy as np
-from flask import Flask, request, jsonify, send_from_directory
-
-# ── Compatibility shim ──────────────────────────────────────
-# The tokenizer.pkl was saved with old Keras 2 which stored classes
-# under keras.src.preprocessing.  Keras 3 moved them.  We create a
-# tiny shim so pickle.load can resolve the old import path.
-import types
-
-def _ensure_module(path):
-    """Create stub parent modules so `import path` won't fail."""
-    parts = path.split(".")
-    for i in range(1, len(parts) + 1):
-        mod_path = ".".join(parts[:i])
-        if mod_path not in sys.modules:
-            sys.modules[mod_path] = types.ModuleType(mod_path)
-
-try:
-    # Try importing the new location first
-    from keras.src.preprocessing.text import Tokenizer as _Tok
-except ImportError:
-    _Tok = None
-
-if _Tok is None:
-    try:
-        from tensorflow.keras.preprocessing.text import Tokenizer as _Tok
-    except ImportError:
-        _Tok = None
-
-# Register shim modules so pickle can find the old class path
-_ensure_module("keras.src.preprocessing.text")
-if _Tok is not None:
+from flask import Flask, requ
     sys.modules["keras.src.preprocessing.text"].Tokenizer = _Tok
     # Also patch tokenizer_config if needed
     _ensure_module("keras.src.preprocessing")
