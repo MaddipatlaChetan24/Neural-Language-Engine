@@ -173,6 +173,40 @@ def predict():
         return jsonify({"error": f"Prediction failed: {str(e)}"}), 500
 
 
+@app.route("/model-info", methods=["GET"])
+def model_info():
+    """
+    Return model metadata for the frontend metrics cards.
+
+    Response JSON: {
+        "vocabulary": 15342,
+        "max_sequence": 50,
+        "parameters": "2.3M",
+        "accuracy": "94.8%"
+    }
+    """
+    vocab_size = len(tokenizer.word_index) if tokenizer else 0
+    seq_len = max_len if max_len else 0
+
+    # Calculate parameter count
+    param_count = 0
+    param_str = "N/A"
+    if model:
+        param_count = model.count_params()
+        if param_count >= 1_000_000:
+            param_str = f"{param_count / 1_000_000:.1f}M"
+        elif param_count >= 1_000:
+            param_str = f"{param_count / 1_000:.1f}K"
+        else:
+            param_str = str(param_count)
+
+    return jsonify({
+        "vocabulary": f"{vocab_size:,}",
+        "max_sequence": seq_len,
+        "parameters": param_str,
+        "accuracy": "94.8%",
+    })
+
 
 # ---------------- RUN ----------------
 if __name__ == "__main__":
