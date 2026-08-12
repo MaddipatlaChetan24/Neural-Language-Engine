@@ -404,6 +404,41 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 100 * (i + 1));
     });
   }
+
+  // ═══════════════════════════════════════════════
+  //  13. ARCHITECTURE FLOW ANIMATION
+  // ═══════════════════════════════════════════════
+  function animateArchitectureFlow() {
+    const nodes = document.querySelectorAll(".arch-node");
+    const arrows = document.querySelectorAll(".arch-arrow");
+
+    nodes.forEach(n => n.classList.remove("active"));
+    arrows.forEach(a => a.classList.remove("active"));
+
+    nodes.forEach((node, i) => {
+      setTimeout(() => {
+        node.classList.add("active");
+        if (i > 0 && arrows[i - 1]) arrows[i - 1].classList.add("active");
+        setTimeout(() => {
+          node.classList.remove("active");
+          if (i > 0 && arrows[i - 1]) arrows[i - 1].classList.remove("active");
+        }, 500);
+      }, i * 250);
+    });
+  }
+
+  // ═══════════════════════════════════════════════
+  //  14. NEURAL NETWORK CANVAS
+  // ═══════════════════════════════════════════════
+  const canvas = document.getElementById("neuralCanvas");
+  if (canvas) {
+    const ctx = canvas.getContext("2d");
+    let animId;
+
+    function resizeCanvas() {
+      const wrapper = canvas.parentElement;
+      canvas.width = wrapper.clientWidth;
+      canvas.height = 350;
     }
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
