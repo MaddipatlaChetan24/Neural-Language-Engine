@@ -8,32 +8,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   // ═══════════════════════════════════════════════
-  //  1. VANTA.JS NET BACKGROUND
-  // ═══════════════════════════════════════════════
-  if (window.VANTA && window.VANTA.NET) {
-    try {
-      window.VANTA.NET({
-        el: "#vanta-bg",
-        mouseControls: true,
-        touchControls: true,
-        gyroControls: false,
-        minHeight: 200.0,
-        minWidth: 200.0,
-        scale: 1.0,
-        scaleMobile: 1.0,
-        color: 0x00F5FF,
-        backgroundColor: 0x050816,
-        points: 8,
-        maxDistance: 23,
-        spacing: 18,
-        showDots: true,
-      });
-    } catch (e) {
-      console.warn("Vanta.js init failed:", e);
-    }
-  }
-
-  // ═══════════════════════════════════════════════
+  //  1. VANTA.JS NET B
   //  2. TYPEWRITER EFFECT
   // ═══════════════════════════════════════════════
   const heroTitle = document.getElementById("heroTitle");
