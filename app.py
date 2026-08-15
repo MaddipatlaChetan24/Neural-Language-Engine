@@ -17,6 +17,13 @@ from flask import Flask, request, jsonify, send_from_directory
 # tiny shim so pickle.load can resolve the old import path.
 import types
 
+def _ensure_module(path):
+    """Create stub parent modules so `import path` won't fail."""
+    parts = path.split(".")
+    for i in range(1, len(parts) + 1):
+        mod_path = ".".join(parts[:i])
+        if mod_path not in sys.modules:
+            sys.modules[mod_path] = types.ModuleType(mod_path)
 
 try:
     # Try importing the new location first
@@ -66,11 +73,47 @@ try:
             os.path.join(BASE_DIR, "lstm_model.h5"),
             compile=False,
         )
-    print("✅ Model loaded succ
+    print("✅ Model loaded successfully")
+except Exception as e:
+    print(f"⚠️  Error loading model: {e}")
+    model = None
+
+# Load tokenizer and max_len
+tokenizer = None
+max_len = None
+try:
+    with open(os.path.join(BASE_DIR, "tokenizer.pkl"), "rb") as f:
+        tokenizer = pickle.load(f)
+    with open(os.path.join(BASE_DIR, "max_len.pkl"), "rb") as f:
+        max_len = pickle.load(f)
+    print(f"✅ Tokenizer loaded: {len(tokenizer.word_index):,} words, max_len={max_len}")
+except Exception as e:
+    print(f"⚠️  Error loading tokenizer/max_len: {e}")
+    tokenizer = None
+    max_len = None
+
+# Build reverse word index for fast lookup
+reverse_word_index = {}
+if tokenizer:
+    reverse_word_index = {idx: word for word, idx in tokenizer.word_index.items()}
+
+
+# ---------------- PAD SEQUENCES (standalone) ----------------
 def pad_sequences_manual(sequences, maxlen, padding="pre"):
     """Standalone pad_sequences to avoid importing keras.preprocessing."""
     result = []
-    for s
+    for seq in sequences:
+        if len(seq) >= maxlen:
+            result.append(seq[-maxlen:])
+        else:
+            pad_len = maxlen - len(seq)
+            if padding == "pre":
+                result.append([0] * pad_len + seq)
+            else:
+                result.append(seq + [0] * pad_len)
+    return np.array(result)
+
+
 # ---------------- STATIC FILE ROUTES ----------------
 @app.route("/")
 def serve_index():
@@ -107,7 +150,22 @@ def predict():
         # Tokenize and pad
         token_list = tokenizer.texts_to_sequences([text])[0]
         token_list = pad_sequences_manual(
-            [token_list],
+            [token_list], maxlen=max_len - 1, padding="pre"
+        )
+
+        # Get prediction probabilities
+        preds = model.predict(token_list, verbose=0)[0]
+
+        # Get top 5 predictions
+        top_indices = np.argsort(preds)[-5:][::-1]
+        predictions = []
+        for idx in top_indices:
+            word = reverse_word_index.get(idx, "?")
+            confidence = float(preds[idx])
+            predictions.append({
+                "word": word,
+                "confidence": round(confidence, 4),
+            })
 
         return jsonify({"predictions": predictions})
 
@@ -150,3 +208,11 @@ def model_info():
     })
 
 
+# ---------------- RUN ----------------
+if __name__ == "__main__":
+    print("🚀 Starting Next Word Predictor API...")
+    print(f"   Model loaded: {model is not None}")
+    print(f"   Vocabulary: {len(reverse_word_index):,} words")
+    print(f"   Max sequence length: {max_len}")
+    print(f"   Open http://127.0.0.1:5000 in your browser")
+    app.run(debug=True, host="127.0.0.1", port=5000)
