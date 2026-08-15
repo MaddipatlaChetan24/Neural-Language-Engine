@@ -150,11 +150,3 @@ def model_info():
     })
 
 
-# ---------------- RUN ----------------
-if __name__ == "__main__":
-    print("🚀 Starting Next Word Predictor API...")
-    print(f"   Model loaded: {model is not None}")
-    print(f"   Vocabulary: {len(reverse_word_index):,} words")
-    print(f"   Max sequence length: {max_len}")
-    print(f"   Open http://127.0.0.1:5000 in your browser")
-    app.run(debug=True, host="127.0.0.1", port=5000)
