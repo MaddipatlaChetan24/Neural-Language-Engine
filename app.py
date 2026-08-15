@@ -107,22 +107,7 @@ def predict():
         # Tokenize and pad
         token_list = tokenizer.texts_to_sequences([text])[0]
         token_list = pad_sequences_manual(
-            [token_list], maxlen=max_len - 1, padding="pre"
-        )
-
-        # Get prediction probabilities
-        preds = model.predict(token_list, verbose=0)[0]
-
-        # Get top 5 predictions
-        top_indices = np.argsort(preds)[-5:][::-1]
-        predictions = []
-        for idx in top_indices:
-            word = reverse_word_index.get(idx, "?")
-            confidence = float(preds[idx])
-            predictions.append({
-                "word": word,
-                "confidence": round(confidence, 4),
-            })
+            [token_list],
 
         return jsonify({"predictions": predictions})
 
