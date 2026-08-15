@@ -70,18 +70,7 @@ try:
 def pad_sequences_manual(sequences, maxlen, padding="pre"):
     """Standalone pad_sequences to avoid importing keras.preprocessing."""
     result = []
-    for seq in sequences:
-        if len(seq) >= maxlen:
-            result.append(seq[-maxlen:])
-        else:
-            pad_len = maxlen - len(seq)
-            if padding == "pre":
-                result.append([0] * pad_len + seq)
-            else:
-                result.append(seq + [0] * pad_len)
-    return np.array(result)
-
-
+    for s
 # ---------------- STATIC FILE ROUTES ----------------
 @app.route("/")
 def serve_index():
