@@ -67,19 +67,7 @@ try:
             compile=False,
         )
     print("✅ Model loaded successfully")
-except Exception as e:
-    print(f"⚠️  Error loading model: {e}")
-    model = None
-
-# Load tokenizer and max_len
-tokenizer = None
-max_len = None
-try:
-    with open(os.path.join(BASE_DIR, "tokenizer.pkl"), "rb") as f:
-        tokenizer = pickle.load(f)
-    with open(os.path.join(BASE_DIR, "max_len.pkl"), "rb") as f:
-        max_len = pickle.load(f)
-    print(f"✅ Tokenizer loaded: {len(tokenizer.word_index):,} words, max_len={max_len}")
+except Exception as e:,} words, max_len={max_len}")
 except Exception as e:
     print(f"⚠️  Error loading tokenizer/max_len: {e}")
     tokenizer = None
