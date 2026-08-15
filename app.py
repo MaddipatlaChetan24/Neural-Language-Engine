@@ -66,20 +66,7 @@ try:
             os.path.join(BASE_DIR, "lstm_model.h5"),
             compile=False,
         )
-    print("✅ Model loaded successfully")
-except Exception as e:,} words, max_len={max_len}")
-except Exception as e:
-    print(f"⚠️  Error loading tokenizer/max_len: {e}")
-    tokenizer = None
-    max_len = None
-
-# Build reverse word index for fast lookup
-reverse_word_index = {}
-if tokenizer:
-    reverse_word_index = {idx: word for word, idx in tokenizer.word_index.items()}
-
-
-# ---------------- PAD SEQUENCES (standalone) ----------------
+    print("✅ Model loaded succ
 def pad_sequences_manual(sequences, maxlen, padding="pre"):
     """Standalone pad_sequences to avoid importing keras.preprocessing."""
     result = []
