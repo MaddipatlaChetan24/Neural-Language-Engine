@@ -145,25 +145,7 @@ def predict():
             [token_list], maxlen=max_len - 1, padding="pre"
         )
 
-        # Get prediction probabilities
-        preds = model.predict(token_list, verbose=0)[0]
-
-        # Get top 5 predictions
-        top_indices = np.argsort(preds)[-5:][::-1]
-        predictions = []
-        for idx in top_indices:
-            word = reverse_word_index.get(idx, "?")
-            confidence = float(preds[idx])
-            predictions.append({
-                "word": word,
-                "confidence": round(confidence, 4),
-            })
-
-        return jsonify({"predictions": predictions})
-
-    except Exception as e:
-        return jsonify({"error": f"Prediction failed: {str(e)}"}), 500
-
+        # Get prediction pr
 
 @app.route("/model-info", methods=["GET"])
 def model_info():
