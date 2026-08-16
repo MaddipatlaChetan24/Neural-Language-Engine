@@ -5,9 +5,7 @@ using a pre-trained LSTM model.
 """
 
 import os
-import sys
-import io
-from flask import Flask, request, jsonify, send_from_directory
+
 
 # ── Compatibility shim ──────────────────────────────────────
 # The tokenizer.pkl was saved with old Keras 2 which stored classes
