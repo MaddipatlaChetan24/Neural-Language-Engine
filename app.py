@@ -12,11 +12,6 @@ import os
 # under keras.src.preprocessing.  Keras 3 moved them.  We create a
 # tiny shim so pickle.load can resolve the old import path.
 
-    try:
-        from tensorflow.keras.preprocessing.text import Tokenizer as _Tok
-    except ImportError:
-        _Tok = None
-
 # Register shim modules so pickle can find the old class path
 _ensure_module("keras.src.preprocessing.text")
 if _Tok is not None:
