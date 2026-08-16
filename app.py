@@ -20,10 +20,6 @@ import os
 
 
 
-# Build reverse word index for fast lookup
-reverse_word_index = {}
-if tokenizer:
-    reverse_word_index = {idx: word for word, idx in tokenizer.word_index.items()}
 
 
 # ---------------- PAD SEQUENCES (standalone) ----------------
