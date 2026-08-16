@@ -18,15 +18,7 @@ import os
 
 
 
-    # Suppress the verbose TF warnings
-    os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
-
-    # Custom object scope to handle removed LSTM kwargs
-    class LSTMCompat(tf.keras.layers.LSTM):
-        """LSTM wrapper that silently ignores removed kwargs like time_major."""
-        def __init__(self, *args, **kwargs):
-            kwargs.pop("time_major", None)
-            super().__init__(*args, **kwargs)
+    
 
     custom_objects = {"LSTM": LSTMCompat}
 
