@@ -5,19 +5,113 @@ using a pre-trained LSTM model.
 """
 
 import os
-
+import sys
+import io
+import pickle
+import numpy as np
+from flask import Flask, request, jsonify, send_from_directory
 
 # ── Compatibility shim ──────────────────────────────────────
 # The tokenizer.pkl was saved with old Keras 2 which stored classes
 # under keras.src.preprocessing.  Keras 3 moved them.  We create a
 # tiny shim so pickle.load can resolve the old import path.
+import types
+
+def _ensure_module(path):
+    """Create stub parent modules so `import path` won't fail."""
+    parts = path.split(".")
+    for i in range(1, len(parts) + 1):
+        mod_path = ".".join(parts[:i])
+        if mod_path not in sys.modules:
+            sys.modules[mod_path] = types.ModuleType(mod_path)
+
+try:
+    # Try importing the new location first
+    from keras.src.preprocessing.text import Tokenizer as _Tok
+except ImportError:
+    _Tok = None
+
+if _Tok is None:
+    try:
+        from tensorflow.keras.preprocessing.text import Tokenizer as _Tok
+    except ImportError:
+        _Tok = None
 
 # Register shim modules so pickle can find the old class path
+_ensure_module("keras.src.preprocessing.text")
+if _Tok is not None:
+    sys.modules["keras.src.preprocessing.text"].Tokenizer = _Tok
+    # Also patch tokenizer_config if needed
+    _ensure_module("keras.src.preprocessing")
 
 
+# ---------------- APP CONFIG ----------------
+app = Flask(__name__, static_folder=".", static_url_path="")
+
+# ---------------- LOAD MODEL ASSETS ----------------
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Load model with compatibility for old Keras 2 .h5 files
+model = None
+try:
+    import tensorflow as tf
+
+    # Suppress the verbose TF warnings
+    os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
+
+    # Custom object scope to handle removed LSTM kwargs
+    class LSTMCompat(tf.keras.layers.LSTM):
+        """LSTM wrapper that silently ignores removed kwargs like time_major."""
+        def __init__(self, *args, **kwargs):
+            kwargs.pop("time_major", None)
+            super().__init__(*args, **kwargs)
+
+    custom_objects = {"LSTM": LSTMCompat}
+
+    with tf.keras.utils.custom_object_scope(custom_objects):
+        model = tf.keras.models.load_model(
+            os.path.join(BASE_DIR, "lstm_model.h5"),
+            compile=False,
+        )
+    print("✅ Model loaded successfully")
+except Exception as e:
+    print(f"⚠️  Error loading model: {e}")
+    model = None
+
+# Load tokenizer and max_len
+tokenizer = None
+max_len = None
+try:
+    with open(os.path.join(BASE_DIR, "tokenizer.pkl"), "rb") as f:
+        tokenizer = pickle.load(f)
+    with open(os.path.join(BASE_DIR, "max_len.pkl"), "rb") as f:
+        max_len = pickle.load(f)
+    print(f"✅ Tokenizer loaded: {len(tokenizer.word_index):,} words, max_len={max_len}")
+except Exception as e:
+    print(f"⚠️  Error loading tokenizer/max_len: {e}")
+    tokenizer = None
+    max_len = None
+
+# Build reverse word index for fast lookup
+reverse_word_index = {}
+if tokenizer:
+    reverse_word_index = {idx: word for word, idx in tokenizer.word_index.items()}
 
 
-
+# ---------------- PAD SEQUENCES (standalone) ----------------
+def pad_sequences_manual(sequences, maxlen, padding="pre"):
+    """Standalone pad_sequences to avoid importing keras.preprocessing."""
+    result = []
+    for seq in sequences:
+        if len(seq) >= maxlen:
+            result.append(seq[-maxlen:])
+        else:
+            pad_len = maxlen - len(seq)
+            if padding == "pre":
+                result.append([0] * pad_len + seq)
+            else:
+                result.append(seq + [0] * pad_len)
+    return np.array(result)
 
 
 # ---------------- STATIC FILE ROUTES ----------------
@@ -59,7 +153,25 @@ def predict():
             [token_list], maxlen=max_len - 1, padding="pre"
         )
 
-        # Get prediction pr
+        # Get prediction probabilities
+        preds = model.predict(token_list, verbose=0)[0]
+
+        # Get top 5 predictions
+        top_indices = np.argsort(preds)[-5:][::-1]
+        predictions = []
+        for idx in top_indices:
+            word = reverse_word_index.get(idx, "?")
+            confidence = float(preds[idx])
+            predictions.append({
+                "word": word,
+                "confidence": round(confidence, 4),
+            })
+
+        return jsonify({"predictions": predictions})
+
+    except Exception as e:
+        return jsonify({"error": f"Prediction failed: {str(e)}"}), 500
+
 
 @app.route("/model-info", methods=["GET"])
 def model_info():
