@@ -17,14 +17,6 @@ from flask import Flask, request, jsonify, send_from_directory
 # tiny shim so pickle.load can resolve the old import path.
 import types
 
-def _ensure_module(path):
-    """Create stub parent modules so `import path` won't fail."""
-    parts = path.split(".")
-    for i in range(1, len(parts) + 1):
-        mod_path = ".".join(parts[:i])
-        if mod_path not in sys.modules:
-            sys.modules[mod_path] = types.ModuleType(mod_path)
-
 try:
     # Try importing the new location first
     from keras.src.preprocessing.text import Tokenizer as _Tok
