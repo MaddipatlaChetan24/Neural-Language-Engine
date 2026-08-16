@@ -7,8 +7,6 @@ using a pre-trained LSTM model.
 import os
 import sys
 import io
-import pickle
-import numpy as np
 from flask import Flask, request, jsonify, send_from_directory
 
 # ── Compatibility shim ──────────────────────────────────────
