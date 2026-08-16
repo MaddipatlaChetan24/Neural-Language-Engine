@@ -13,11 +13,7 @@ import os
 # tiny shim so pickle.load can resolve the old import path.
 
 # Register shim modules so pickle can find the old class path
-_ensure_module("keras.src.preprocessing.text")
-if _Tok is not None:
-    sys.modules["keras.src.preprocessing.text"].Tokenizer = _Tok
-    # Also patch tokenizer_config if needed
-    _ensure_module("keras.src.preprocessing")
+
 
 
 # ---------------- APP CONFIG ----------------
