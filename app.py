@@ -11,15 +11,7 @@ import os
 # The tokenizer.pkl was saved with old Keras 2 which stored classes
 # under keras.src.preprocessing.  Keras 3 moved them.  We create a
 # tiny shim so pickle.load can resolve the old import path.
-import types
 
-try:
-    # Try importing the new location first
-    from keras.src.preprocessing.text import Tokenizer as _Tok
-except ImportError:
-    _Tok = None
-
-if _Tok is None:
     try:
         from tensorflow.keras.preprocessing.text import Tokenizer as _Tok
     except ImportError:
