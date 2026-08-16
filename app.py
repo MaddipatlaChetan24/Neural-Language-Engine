@@ -16,16 +16,7 @@ import os
 
 
 
-# ---------------- APP CONFIG ----------------
-app = Flask(__name__, static_folder=".", static_url_path="")
 
-# ---------------- LOAD MODEL ASSETS ----------------
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-# Load model with compatibility for old Keras 2 .h5 files
-model = None
-try:
-    import tensorflow as tf
 
     # Suppress the verbose TF warnings
     os.environ.setdefault("TF_CPP_MIN_LOG_LEVEL", "2")
