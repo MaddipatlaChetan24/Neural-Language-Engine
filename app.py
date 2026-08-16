@@ -18,19 +18,7 @@ import os
 
 
 
-    
 
-    custom_objects = {"LSTM": LSTMCompat}
-
-    with open(os.path.join(BASE_DIR, "tokenizer.pkl"), "rb") as f:
-        tokenizer = pickle.load(f)
-    with open(os.path.join(BASE_DIR, "max_len.pkl"), "rb") as f:
-        max_len = pickle.load(f)
-    print(f"✅ Tokenizer loaded: {len(tokenizer.word_index):,} words, max_len={max_len}")
-except Exception as e:
-    print(f"⚠️  Error loading tokenizer/max_len: {e}")
-    tokenizer = None
-    max_len = None
 
 # Build reverse word index for fast lookup
 reverse_word_index = {}
