@@ -13,11 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     } catch (e) {
       console.warn("Vanta.js init failed:", e);
-      
-  // ═══════════════════════════════════════════════
-  //  2. TYPEWRITER EFFECT
-  // ═══════════════════════════════════════════════
-  const heroTitle = document.getElementById("heroTitle");
   const cursor = document.getElementById("cursor");
   const fullText = "Neural Language Engine";
   let charIndex = 0;
