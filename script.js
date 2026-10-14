@@ -10,11 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ═══════════════════════════════════════════════
     } catch (e) {
       console.warn("Vanta.js init failed:", e);
-  const cursor = document.getElementById("cursor");
-  const fullText = "Neural Language Engine";
-  let charIndex = 0;
-
-  function typeWriter() {
       setTimeout(typeWriter, 70);
     } else {
       // Hide cursor after typing completes
