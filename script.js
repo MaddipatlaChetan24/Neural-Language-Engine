@@ -14,9 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       window.VANTA.NET({
         el: "#vanta-bg",
-        mouseControls: true,
-        maxDistance: 23,
-        spacing: 18,
         showDots: true,
       });
     } catch (e) {
