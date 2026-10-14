@@ -17,10 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (cursor) cursor.style.opacity = "0";
       }, 2000);
     }
-  }
-  typeWriter();
-
-  // ═══════════════════════════════════════════════
   //  3. GSAP ANIMATIONS
   // ═══════════════════════════════════════════════
   if (window.gsap) {
