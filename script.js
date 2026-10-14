@@ -8,9 +8,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   // ═══════════════════════════════════════════════
-  //  1. VANTA.JS NET BACKGROUND
-  // ═══════════════════════════════════════════════
-      });
     } catch (e) {
       console.warn("Vanta.js init failed:", e);
   const cursor = document.getElementById("cursor");
