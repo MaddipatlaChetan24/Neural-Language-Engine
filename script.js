@@ -16,8 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
         el: "#vanta-bg",
         mouseControls: true,
         touchControls: true,
-        gyroControls: false,
-        minHeight: 200.0,
         scaleMobile: 1.0,
         color: 0x00F5FF,
         backgroundColor: 0x050816,
