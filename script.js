@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (e) {
       console.warn("Vanta.js init failed:", e);
       
-
   // ═══════════════════════════════════════════════
   //  2. TYPEWRITER EFFECT
   // ═══════════════════════════════════════════════
