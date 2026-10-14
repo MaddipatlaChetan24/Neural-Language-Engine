@@ -35,11 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (window.gsap) {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Hero entrance
-    gsap.from(".hero-badge", { y: -20, opacity: 0, duration: 0.8, delay: 0.2 });
-    gsap.from(".hero-subtitle", { y: 30, opacity: 0, duration: 0.8, delay: 1.8 });
-    gsap.from(".hero-tags", { y: 20, opacity: 0, duration: 0.8, delay: 2.2 });
-
     // Metrics with scroll trigger
     gsap.from(".metric-card", {
       scrollTrigger: { trigger: ".metrics-section", start: "top 80%" },
