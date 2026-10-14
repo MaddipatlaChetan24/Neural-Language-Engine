@@ -18,8 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
         touchControls: true,
         gyroControls: false,
         minHeight: 200.0,
-        minWidth: 200.0,
-        scale: 1.0,
         scaleMobile: 1.0,
         color: 0x00F5FF,
         backgroundColor: 0x050816,
