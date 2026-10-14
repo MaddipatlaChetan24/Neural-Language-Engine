@@ -18,8 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let charIndex = 0;
 
   function typeWriter() {
-    if (charIndex < fullText.length) {
-      heroTitle.textContent += fullText.charAt(charIndex);
       charIndex++;
       setTimeout(typeWriter, 70);
     } else {
