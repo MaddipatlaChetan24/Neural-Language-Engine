@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ═══════════════════════════════════════════════
   //  1. VANTA.JS NET BACKGROUND
   // ═══════════════════════════════════════════════
-  if (window.VANTA && window.VANTA.NET) {
       });
     } catch (e) {
       console.warn("Vanta.js init failed:", e);
