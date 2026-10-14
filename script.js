@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let charIndex = 0;
 
   function typeWriter() {
-      charIndex++;
       setTimeout(typeWriter, 70);
     } else {
       // Hide cursor after typing completes
