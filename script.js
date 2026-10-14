@@ -15,8 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
       window.VANTA.NET({
         el: "#vanta-bg",
         mouseControls: true,
-        touchControls: true,
-        scaleMobile: 1.0,
         color: 0x00F5FF,
         backgroundColor: 0x050816,
         points: 8,
