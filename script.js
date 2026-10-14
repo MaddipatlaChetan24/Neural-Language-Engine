@@ -8,8 +8,43 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   // ═══════════════════════════════════════════════
+  //  1. VANTA.JS NET BACKGROUND
+  // ═══════════════════════════════════════════════
+  if (window.VANTA && window.VANTA.NET) {
+    try {
+      window.VANTA.NET({
+        el: "#vanta-bg",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.0,
+        minWidth: 200.0,
+        scale: 1.0,
+        scaleMobile: 1.0,
+        color: 0x00F5FF,
+        backgroundColor: 0x050816,
+        points: 8,
+        maxDistance: 23,
+        spacing: 18,
+        showDots: true,
+      });
     } catch (e) {
       console.warn("Vanta.js init failed:", e);
+    }
+  }
+
+  // ═══════════════════════════════════════════════
+  //  2. TYPEWRITER EFFECT
+  // ═══════════════════════════════════════════════
+  const heroTitle = document.getElementById("heroTitle");
+  const cursor = document.getElementById("cursor");
+  const fullText = "Neural Language Engine";
+  let charIndex = 0;
+
+  function typeWriter() {
+    if (charIndex < fullText.length) {
+      heroTitle.textContent += fullText.charAt(charIndex);
+      charIndex++;
       setTimeout(typeWriter, 70);
     } else {
       // Hide cursor after typing completes
@@ -17,10 +52,19 @@ document.addEventListener("DOMContentLoaded", () => {
         if (cursor) cursor.style.opacity = "0";
       }, 2000);
     }
+  }
+  typeWriter();
+
+  // ═══════════════════════════════════════════════
   //  3. GSAP ANIMATIONS
   // ═══════════════════════════════════════════════
   if (window.gsap) {
     gsap.registerPlugin(ScrollTrigger);
+
+    // Hero entrance
+    gsap.from(".hero-badge", { y: -20, opacity: 0, duration: 0.8, delay: 0.2 });
+    gsap.from(".hero-subtitle", { y: 30, opacity: 0, duration: 0.8, delay: 1.8 });
+    gsap.from(".hero-tags", { y: 20, opacity: 0, duration: 0.8, delay: 2.2 });
 
     // Metrics with scroll trigger
     gsap.from(".metric-card", {
