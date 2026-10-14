@@ -12,8 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // ═══════════════════════════════════════════════
   if (window.VANTA && window.VANTA.NET) {
     try {
-      window.VANTA.NET({
-        el: "#vanta-bg",
         showDots: true,
       });
     } catch (e) {
